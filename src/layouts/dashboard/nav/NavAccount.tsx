@@ -35,7 +35,7 @@ export default function NavAccount() {
 
         <Box sx={{ ml: 2, minWidth: 0 }}>
           <Typography variant="subtitle2" noWrap>
-            {user?.displayName}
+            {user?.firstname} {user?.lastname}
           </Typography>
 
           <Typography variant="body2" noWrap sx={{ color: 'text.secondary' }}>

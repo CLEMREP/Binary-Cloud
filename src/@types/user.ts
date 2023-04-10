@@ -100,7 +100,8 @@ export type IUserCard = {
 export type IUserAccountGeneral = {
   id: string;
   avatarUrl: string;
-  name: string;
+  firstname: string;
+  lastname: string;
   email: string;
   phoneNumber: string;
   address: string;

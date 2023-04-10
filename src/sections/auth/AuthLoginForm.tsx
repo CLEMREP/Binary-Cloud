@@ -31,12 +31,12 @@ export default function AuthLoginForm() {
 
   const LoginSchema = Yup.object().shape({
     email: Yup.string().required('Une adresse électronique est requise.').email('Votre adresse électronique doit être valide.'),
-    password: Yup.string().required('Votre mot de passe est requis.'),
+    password: Yup.string().required('Un mot de passe est requis.'),
   });
 
   const defaultValues = {
-      email: 'demo@minimals.cc',
-      password: 'demo1234',
+      email: 'contact@clement-repel.fr',
+      password: 'password',
   };
 
   const methods = useForm<FormValuesProps>({
