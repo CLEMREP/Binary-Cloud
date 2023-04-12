@@ -21,6 +21,7 @@ import FormProvider, {
   RHFTextField,
   RHFUploadAvatar,
 } from '../../../../components/hook-form';
+import axios from "../../../../utils/axios";
 
 // ----------------------------------------------------------------------
 
@@ -44,29 +45,27 @@ export default function AccountGeneral() {
   const { user } = useAuthContext();
 
   const UpdateUserSchema = Yup.object().shape({
-    displayName: Yup.string().required('Le nom est requis'),
+    firstname: Yup.string().required('Le prénom est requis'),
+    lastname: Yup.string().required('Le nom est requis'),
     email: Yup.string().required('L\'e-mail est requise').email('L\'e-mail est invalide'),
     photoURL: Yup.string().required('La photo est requise').nullable(true),
     phoneNumber: Yup.string().required('Le numéro de téléphone est requis'),
     country: Yup.string().required('Le pays est requis'),
     address: Yup.string().required('L\'adresse est requise'),
-    state: Yup.string().required('Le département est requis'),
     city: Yup.string().required('La ville est requise'),
     zipCode: Yup.string().required('Le code postal est requis'),
-    about: Yup.string().required('La description est requise'),
   });
 
   const defaultValues = {
-    displayName: user?.displayName || '',
+    firstname: user?.firstname || '',
+    lastname: user?.lastname || '',
     email: user?.email || '',
     photoURL: user?.photoURL || null,
     phoneNumber: user?.phoneNumber || '',
     country: user?.country || '',
     address: user?.address || '',
-    state: user?.state || '',
     city: user?.city || '',
     zipCode: user?.zipCode || '',
-    about: user?.about || '',
     isPublic: user?.isPublic || false,
   };
 
@@ -84,8 +83,10 @@ export default function AccountGeneral() {
   const onSubmit = async (data: FormValuesProps) => {
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
+      await axios.post('/api/account/update', {
+        data,
+      });
       enqueueSnackbar('Modification effectuée !');
-      console.log('DATA', data);
     } catch (error) {
       console.error(error);
     }
@@ -152,7 +153,9 @@ export default function AccountGeneral() {
                 sm: 'repeat(2, 1fr)',
               }}
             >
-              <RHFTextField name="displayName" label="Nom complet" />
+              <RHFTextField name="firstname" label="Prénom" />
+
+              <RHFTextField name="lastname" label="Nom" />
 
               <RHFTextField name="email" label="Adresse électronique" />
 
@@ -168,8 +171,6 @@ export default function AccountGeneral() {
                   </option>
                 ))}
               </RHFSelect>
-
-              <RHFTextField name="state" label="Région" />
 
               <RHFTextField name="city" label="Ville" />
 

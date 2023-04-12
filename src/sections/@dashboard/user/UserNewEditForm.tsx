@@ -44,7 +44,8 @@ export default function UserNewEditForm({ isEdit = false, currentUser }: Props) 
   const { enqueueSnackbar } = useSnackbar();
 
   const NewUserSchema = Yup.object().shape({
-    name: Yup.string().required('Le nom est requis'),
+    firstname: Yup.string().required('Le prénom est requis'),
+    lastname: Yup.string().required('Le nom est requis'),
     email: Yup.string().required('L\'e-mail est requise').email('L\'e-mail est au mauvais format'),
     phoneNumber: Yup.string().required('Le numéro de téléphone est requis'),
     address: Yup.string().required('L\'adresse est requise'),
@@ -58,7 +59,8 @@ export default function UserNewEditForm({ isEdit = false, currentUser }: Props) 
 
   const defaultValues = useMemo(
     () => ({
-      name: currentUser?.name || '',
+      firstname: currentUser?.firstname || '',
+      lastname: currentUser?.lastname || '',
       email: currentUser?.email || '',
       phoneNumber: currentUser?.phoneNumber || '',
       address: currentUser?.address || '',
@@ -227,7 +229,8 @@ export default function UserNewEditForm({ isEdit = false, currentUser }: Props) 
                 sm: 'repeat(2, 1fr)',
               }}
             >
-              <RHFTextField name="name" label="Nom complet" />
+              <RHFTextField name="firstname" label="Prénom" />
+              <RHFTextField name="lastname" label="Nom" />
               <RHFTextField name="email" label="Adresse électronique" />
               <RHFTextField name="phoneNumber" label="Téléphone" />
 
