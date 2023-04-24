@@ -39,7 +39,7 @@
     "@mui/system": "^5.11.5",
     "@mui/x-data-grid": "^5.17.19",
     "@mui/x-date-pickers": "^5.0.14",
-    "@next/font": "^13.1.2",
+    "@next/codemod": "^13.3.1",
     "@react-pdf/renderer": "^3.0.2",
     "@reduxjs/toolkit": "^1.9.1",
     "amazon-cognito-identity-js": "^6.1.2",

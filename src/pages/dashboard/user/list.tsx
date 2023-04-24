@@ -183,6 +183,7 @@ export default function UserListPage() {
   };
 
   const handleEditRow = (id: string) => {
+    console.log(id);
     push(PATH_DASHBOARD.user.edit(paramCase(id)));
   };
 
@@ -290,7 +291,7 @@ export default function UserListPage() {
                         selected={selected.includes(row.id)}
                         onSelectRow={() => onSelectRow(row.id)}
                         onDeleteRow={() => handleDeleteRow(row.id)}
-                        onEditRow={() => handleEditRow(row.name)}
+                        onEditRow={() => handleEditRow(row.id)}
                       />
                     ))}
 
@@ -371,7 +372,7 @@ function applyFilter({
 
   if (filterName) {
     inputData = inputData.filter(
-      (user) => user.name.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
+      (user) => user.id.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
     );
   }
 

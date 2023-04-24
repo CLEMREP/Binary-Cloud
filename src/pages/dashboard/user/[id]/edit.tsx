@@ -26,12 +26,12 @@ export default function UserEditPage() {
   const { themeStretch } = useSettingsContext();
 
   const {
-    query: { name },
+    query: { id },
   } = useRouter();
 
-  const currentUser = _userList.find((user) => paramCase(user.name) === name);
+  const currentUser = _userList.find((user) => paramCase(user.id) === id);
 
-  return (
+    return (
     <>
       <Head>
         <title> Éditer un client - Binary-Cloud</title>
@@ -49,7 +49,7 @@ export default function UserEditPage() {
               name: 'Mes clients',
               href: PATH_DASHBOARD.user.list,
             },
-            { name: currentUser?.name },
+            { name: currentUser?.firstname },
           ]}
         />
 

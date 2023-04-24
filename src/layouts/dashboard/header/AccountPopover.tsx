@@ -18,15 +18,11 @@ import { IconButtonAnimate } from '../../../components/animate';
 
 const OPTIONS = [
   {
-    label: 'Home',
+    label: 'Tableau de bord',
     linkTo: '/',
   },
   {
-    label: 'Profile',
-    linkTo: PATH_DASHBOARD.user.profile,
-  },
-  {
-    label: 'Settings',
+    label: 'Mon compte',
     linkTo: PATH_DASHBOARD.user.account,
   },
 ];
@@ -57,7 +53,7 @@ export default function AccountPopover() {
       handleClosePopover();
     } catch (error) {
       console.error(error);
-      enqueueSnackbar('Unable to logout!', { variant: 'error' });
+      enqueueSnackbar('Déconnexion impossible !', { variant: 'error' });
     }
   };
 
@@ -65,6 +61,8 @@ export default function AccountPopover() {
     handleClosePopover();
     push(path);
   };
+
+  const image = `${process.env.HOST_API_KEY}/${user?.company?.image?.path}`;
 
   return (
     <>
@@ -85,13 +83,13 @@ export default function AccountPopover() {
           }),
         }}
       >
-        <CustomAvatar src={user?.photoURL} alt={user?.displayName} name={user?.displayName} />
+        <CustomAvatar src={image} alt={user?.company?.name} name={user?.company?.name} />
       </IconButtonAnimate>
 
       <MenuPopover open={openPopover} onClose={handleClosePopover} sx={{ width: 200, p: 0 }}>
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {user?.displayName}
+            {user?.firstname} {user?.lastname}
           </Typography>
 
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
@@ -112,7 +110,7 @@ export default function AccountPopover() {
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <MenuItem onClick={handleLogout} sx={{ m: 1 }}>
-          Logout
+          Déconnexion
         </MenuItem>
       </MenuPopover>
     </>
