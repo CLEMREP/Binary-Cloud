@@ -62,7 +62,7 @@ export default function UserNewEditForm({ isEdit = false, currentUser }: Props) 
       firstname: currentUser?.firstname || '',
       lastname: currentUser?.lastname || '',
       email: currentUser?.email || '',
-      phoneNumber: currentUser?.phoneNumber || '',
+      phoneNumber: currentUser?.phone || '',
       address: currentUser?.address || '',
       country: currentUser?.country || '',
       state: currentUser?.state || '',

@@ -53,7 +53,7 @@ export default function AccountPopover() {
       handleClosePopover();
     } catch (error) {
       console.error(error);
-      enqueueSnackbar('Unable to logout!', { variant: 'error' });
+      enqueueSnackbar('Déconnexion impossible !', { variant: 'error' });
     }
   };
 
@@ -61,6 +61,8 @@ export default function AccountPopover() {
     handleClosePopover();
     push(path);
   };
+
+  const image = `${process.env.HOST_API_KEY}/${user?.company?.image?.path}`;
 
   return (
     <>
@@ -81,7 +83,7 @@ export default function AccountPopover() {
           }),
         }}
       >
-        <CustomAvatar src={user?.photoURL} alt={user?.displayName} name={user?.displayName} />
+        <CustomAvatar src={image} alt={user?.company?.name} name={user?.company?.name} />
       </IconButtonAnimate>
 
       <MenuPopover open={openPopover} onClose={handleClosePopover} sx={{ width: 200, p: 0 }}>

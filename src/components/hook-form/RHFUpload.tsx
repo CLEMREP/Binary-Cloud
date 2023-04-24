@@ -16,7 +16,6 @@ interface Props extends Omit<UploadProps, 'file'> {
 
 export function RHFUploadAvatar({ name, ...other }: Props) {
   const { control } = useFormContext();
-
   return (
     <Controller
       name={name}

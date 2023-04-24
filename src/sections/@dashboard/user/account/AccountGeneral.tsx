@@ -1,42 +1,36 @@
 import * as Yup from 'yup';
-import { useCallback } from 'react';
 // form
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
-import { Box, Grid, Card, Stack, Typography } from '@mui/material';
+import { Box, Grid, Card, Stack } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // auth
 import { useAuthContext } from '../../../../auth/useAuthContext';
-// utils
-import { fData } from '../../../../utils/formatNumber';
+import { forEach } from "lodash";
 // assets
 import { countries } from '../../../../assets/data';
 // components
 import { CustomFile } from '../../../../components/upload';
 import { useSnackbar } from '../../../../components/snackbar';
 import FormProvider, {
-  RHFSwitch,
   RHFSelect,
   RHFTextField,
-  RHFUploadAvatar,
 } from '../../../../components/hook-form';
 import axios from "../../../../utils/axios";
 
 // ----------------------------------------------------------------------
 
 type FormValuesProps = {
-  displayName: string;
+  firstname: string;
+  lastname: string;
   email: string;
   photoURL: CustomFile | string | null;
-  phoneNumber: string | null;
-  country: string | null;
+  phone: string | null;
   address: string | null;
   state: string | null;
   city: string | null;
-  zipCode: string | null;
-  about: string | null;
-  isPublic: boolean;
+  zip: string | null;
 };
 
 export default function AccountGeneral() {
@@ -48,25 +42,22 @@ export default function AccountGeneral() {
     firstname: Yup.string().required('Le prénom est requis'),
     lastname: Yup.string().required('Le nom est requis'),
     email: Yup.string().required('L\'e-mail est requise').email('L\'e-mail est invalide'),
-    photoURL: Yup.string().required('La photo est requise').nullable(true),
-    phoneNumber: Yup.string().required('Le numéro de téléphone est requis'),
-    country: Yup.string().required('Le pays est requis'),
+    phone: Yup.string().required('Le numéro de téléphone est requis'),
+    state: Yup.string().required('Le pays est requis'),
     address: Yup.string().required('L\'adresse est requise'),
     city: Yup.string().required('La ville est requise'),
-    zipCode: Yup.string().required('Le code postal est requis'),
+    zip: Yup.string().required('Le code postal est requis'),
   });
 
   const defaultValues = {
     firstname: user?.firstname || '',
     lastname: user?.lastname || '',
     email: user?.email || '',
-    photoURL: user?.photoURL || null,
-    phoneNumber: user?.phoneNumber || '',
-    country: user?.country || '',
-    address: user?.address || '',
-    city: user?.city || '',
-    zipCode: user?.zipCode || '',
-    isPublic: user?.isPublic || false,
+    phone: user?.phone || '',
+    state: user?.address.state || '',
+    address: user?.address.address || '',
+    city: user?.address.city || '',
+    zip: user?.address.zip || '',
   };
 
   const methods = useForm<FormValuesProps>({
@@ -75,7 +66,6 @@ export default function AccountGeneral() {
   });
 
   const {
-    setValue,
     handleSubmit,
     formState: { isSubmitting },
   } = methods;
@@ -83,66 +73,27 @@ export default function AccountGeneral() {
   const onSubmit = async (data: FormValuesProps) => {
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
-      await axios.post('/api/account/update', {
+      await axios.put(`/api/account/update/${user?.id}`, {
         data,
       });
-      enqueueSnackbar('Modification effectuée !');
+      enqueueSnackbar('Modifications enregistrées !');
+      window.location.reload();
     } catch (error) {
-      console.error(error);
+      forEach(error.errors, (value, key) => {
+        // @ts-ignore
+        methods.setError(key, {
+            type: 'manual',
+            message: value,
+        });
+      });
     }
   };
-
-  const handleDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      const file = acceptedFiles[0];
-
-      const newFile = Object.assign(file, {
-        preview: URL.createObjectURL(file),
-      });
-
-      if (file) {
-        setValue('photoURL', newFile, { shouldValidate: true });
-      }
-    },
-    [setValue]
-  );
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
-        <Grid item xs={12} md={4}>
-          <Card sx={{ py: 10, px: 3, textAlign: 'center' }}>
-            <RHFUploadAvatar
-              name="photoURL"
-              maxSize={3145728}
-              onDrop={handleDrop}
-              helperText={
-                <Typography
-                  variant="caption"
-                  sx={{
-                    mt: 2,
-                    mx: 'auto',
-                    display: 'block',
-                    textAlign: 'center',
-                    color: 'text.secondary',
-                  }}
-                >
-                  Autorisé : *.jpeg, *.jpg, *.png, *.gif
-                  <br /> Taille maximale de {fData(3145728)}
-                </Typography>
-              }
-            />
 
-            <RHFSwitch
-              name="isPublic"
-              labelPlacement="start"
-              label="Profil public"
-              sx={{ mt: 5 }}
-            />
-          </Card>
-        </Grid>
-
-        <Grid item xs={12} md={8}>
+        <Grid item xs={12} md={12}>
           <Card sx={{ p: 3 }}>
             <Box
               rowGap={3}
@@ -159,11 +110,11 @@ export default function AccountGeneral() {
 
               <RHFTextField name="email" label="Adresse électronique" />
 
-              <RHFTextField name="phoneNumber" label="Téléphone" />
+              <RHFTextField name="phone" label="Téléphone" />
 
               <RHFTextField name="address" label="Adresse" />
 
-              <RHFSelect native name="country" label="Pays" placeholder="Pays">
+              <RHFSelect native name="state" label="Pays" placeholder="Pays">
                 <option value="" />
                 {countries.map((country) => (
                   <option key={country.code} value={country.label}>
@@ -174,7 +125,7 @@ export default function AccountGeneral() {
 
               <RHFTextField name="city" label="Ville" />
 
-              <RHFTextField name="zipCode" label="Code postal" />
+              <RHFTextField name="zip" label="Code postal" />
             </Box>
 
             <Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>

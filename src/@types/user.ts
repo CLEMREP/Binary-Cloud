@@ -103,7 +103,7 @@ export type IUserAccountGeneral = {
   firstname: string;
   lastname: string;
   email: string;
-  phoneNumber: string;
+  phone: string;
   address: string;
   country: string;
   state: string;
@@ -139,9 +139,9 @@ export type IUserAccountBillingAddress = {
 };
 
 export type IUserAccountChangePassword = {
-  oldPassword: string;
-  newPassword: string;
-  confirmNewPassword: string;
+  old_password: string;
+  password: string;
+  password_confirmation: string;
 };
 
 // ----------------------------------------------------------------------

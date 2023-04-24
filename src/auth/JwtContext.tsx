@@ -102,7 +102,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         const response = await axios.get('/api/account/my-account');
 
         const { user } = response.data;
-        user.displayName = `${user.firstname} ${user.lastname}`;
+
         dispatch({
           type: Types.INITIAL,
           payload: {
@@ -142,7 +142,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
       password,
     });
     const { accessToken, user } = response.data;
-    user.displayName = `${user.firstname} ${user.lastname}`;
 
     setSession(accessToken);
 

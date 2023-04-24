@@ -9,7 +9,6 @@ import {
 //
 import AccountBillingAddressBook from './AccountBillingAddressBook';
 import AccountBillingPaymentMethod from './AccountBillingPaymentMethod';
-import AccountBillingInvoiceHistory from './AccountBillingInvoiceHistory';
 
 // ----------------------------------------------------------------------
 

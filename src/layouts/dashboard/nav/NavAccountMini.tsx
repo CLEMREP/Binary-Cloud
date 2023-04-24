@@ -26,11 +26,11 @@ const StyledRoot = styled('div')(({ theme }) => ({
 
 export default function NavAccountMini() {
   const { user } = useAuthContext();
-
+  const image = `${process.env.HOST_API_KEY}/${user?.company?.image?.path}`;
   return (
     <Link component={NextLink} href={PATH_DASHBOARD.user.account} underline="none" color="inherit">
       <StyledRoot>
-        <CustomAvatar src={user?.photoURL} alt={user?.displayName} name={user?.displayName} />
+        <CustomAvatar src={image} alt={user?.company?.name} name={user?.company?.name} />
       </StyledRoot>
     </Link>
   );
