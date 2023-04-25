@@ -3,7 +3,7 @@ module.exports = {
   trailingSlash: true,
   env: {
     // HOST
-    HOST_API_KEY: 'http://binary-cloud-api.test',
+    HOST_API_KEY: 'https://api.binary-cloud.fr',
     // MAPBOX
     MAPBOX_API: '',
     // FIREBASE
