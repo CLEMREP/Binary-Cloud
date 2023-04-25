@@ -92,13 +92,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const storageAvailable = localStorageAvailable();
 
+  const csrf = () => axios.get('/sanctum/csrf-cookie')
+
   const initialize = useCallback(async () => {
     try {
       const accessToken = storageAvailable ? localStorage.getItem('accessToken') : '';
 
       if (accessToken && isValidToken(accessToken)) {
         setSession(accessToken);
-
+        await csrf();
         const response = await axios.get('/api/account/my-account');
 
         const { user } = response.data;
@@ -137,6 +139,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   // LOGIN
   const login = useCallback(async (email: string, password: string) => {
+    await csrf();
     const response = await axios.post('/api/account/login', {
       email,
       password,
@@ -156,6 +159,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   // REGISTER
   const register = useCallback(
     async (email: string, password: string, firstName: string, lastName: string) => {
+        await csrf();
       const response = await axios.post('/api/account/register', {
         email,
         password,
